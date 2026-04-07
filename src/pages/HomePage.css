@@ -1,0 +1,244 @@
+/* ── Base ── */
+.home {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: #ffffff;
+  overflow: hidden;
+  font-family: 'Inter', 'Raleway', sans-serif;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.home--mounted {
+  opacity: 1;
+}
+
+/* ── Nav ── */
+.home__nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 22px;
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 0.5s ease 0.1s, transform 0.5s ease 0.1s;
+}
+
+.home--mounted .home__nav {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.home__logo {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: #1a1b1c;
+}
+
+.home__nav-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.home__nav-intro {
+  font-size: 11px;
+  font-weight: 400;
+  color: rgba(26, 27, 28, 0.51);
+  letter-spacing: 0.06em;
+}
+
+.home__enter-code {
+  background: #1a1b1c;
+  color: #fcfcfc;
+  border: none;
+  border-radius: 0;
+  padding: 10px 20px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  font-family: 'Inter', 'Raleway', sans-serif;
+  transition: opacity 0.2s ease;
+}
+
+.home__enter-code:hover {
+  opacity: 0.85;
+}
+
+/* ── Large side diamonds ── */
+.home__side-diamond {
+  position: absolute;
+  top: 50%;
+  width: 500px;
+  height: 500px;
+  border: 1px dotted #A0A4AB;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.home__side-diamond--left {
+  left: -250px;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.home__side-diamond--right {
+  right: -250px;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+/* ── Hero ── */
+.home__hero {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 6;
+  pointer-events: none;
+}
+
+.home__title {
+  font-size: clamp(60px, 7vw, 96px);
+  font-weight: 400;
+  line-height: 1.05;
+  text-align: center;
+  color: #1a1b1c;
+  margin: 0;
+  letter-spacing: -0.02em;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.7s ease 0.25s, transform 0.7s ease 0.25s;
+}
+
+.home--mounted .home__title {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Side panels ── */
+.home__side {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0;
+  transition: opacity 0.3s ease;
+  opacity: 0;
+}
+
+.home--mounted .home__side--left {
+  animation: fadeInLeft 0.55s ease 0.45s forwards;
+}
+
+.home--mounted .home__side--right {
+  animation: fadeInRight 0.55s ease 0.45s forwards;
+}
+
+.home__side--left {
+  left: 36px;
+}
+
+.home__side--right {
+  right: 36px;
+}
+
+.home__side--faded {
+  opacity: 0.12 !important;
+  transition: opacity 0.3s ease;
+}
+
+/* ── Diamond button ── */
+.home__btn-diamond {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #1a1b1c;
+  transform: rotate(45deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.home__side:hover .home__btn-diamond {
+  transform: rotate(45deg) scale(1.1);
+}
+
+.home__btn-arrow {
+  font-size: 7px;
+  color: #1a1b1c;
+  line-height: 1;
+  display: block;
+}
+
+.home__btn-arrow--left {
+  transform: rotate(-45deg) translateX(-1px);
+}
+
+.home__btn-arrow--right {
+  transform: rotate(-45deg) translateX(1px);
+}
+
+.home__side-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: #1a1b1c;
+  white-space: nowrap;
+  font-family: 'Inter', 'Raleway', sans-serif;
+}
+
+/* ── Description ── */
+.home__description {
+  position: absolute;
+  bottom: 28px;
+  left: 22px;
+  z-index: 10;
+  font-size: 9.5px;
+  font-weight: 400;
+  letter-spacing: 0.07em;
+  color: #1a1b1c;
+  line-height: 1.9;
+  margin: 0;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.6s ease 0.55s, transform 0.6s ease 0.55s;
+}
+
+.home--mounted .home__description {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Animations ── */
+@keyframes fadeInLeft {
+  from { opacity: 0; transform: translateY(-50%) translateX(-10px); }
+  to   { opacity: 1; transform: translateY(-50%) translateX(0); }
+}
+
+@keyframes fadeInRight {
+  from { opacity: 0; transform: translateY(-50%) translateX(10px); }
+  to   { opacity: 1; transform: translateY(-50%) translateX(0); }
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .home__side--left  { left: 8px; }
+  .home__side--right { right: 8px; }
+  .home__title       { font-size: clamp(40px, 10vw, 64px); }
+}
