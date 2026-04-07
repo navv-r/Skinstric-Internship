@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import "./HomePage.css";
 
 export default function HomePage() {
+  const navigate = useNavigate();
   const [hovered, setHovered] = useState(null);
   const [mounted, setMounted] = useState(false);
   const [alignOffset, setAlignOffset] = useState(0);
@@ -119,6 +121,7 @@ export default function HomePage() {
         onAnimationEnd={() => setRightSettled(true)}
         onMouseEnter={() => setHovered("right")}
         onMouseLeave={() => setHovered(null)}
+        onClick={() => navigate("/testing")}
       >
         <span className="home__side-label">TAKE TEST</span>
         <div className="home__btn-diamond">
