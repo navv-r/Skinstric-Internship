@@ -110,13 +110,22 @@
   font-size: clamp(60px, 7vw, 96px);
   font-weight: 400;
   line-height: 1.05;
-  text-align: center;
   color: #1a1b1c;
   margin: 0;
   letter-spacing: -0.02em;
   opacity: 0;
   transform: translateY(14px);
   transition: opacity 0.7s ease 0.25s, transform 0.7s ease 0.25s;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: fit-content;
+}
+
+.home__title span {
+  display: block;
+  transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
 }
 
 .home--mounted .home__title {
@@ -225,7 +234,25 @@
   transform: translateY(0);
 }
 
+/* ── Title move animations ── */
+.home--mounted .home__title--move-left {
+  transform: translateX(-22vw);
+  transition: opacity 0.7s ease, transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.home--mounted .home__title--move-right {
+  transform: translateX(22vw);
+  transition: opacity 0.7s ease, transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.home__side--hidden {
+  opacity: 0 !important;
+  pointer-events: none;
+  transition: opacity 0.35s ease !important;
+}
+
 /* ── Animations ── */
+
 @keyframes fadeInLeft {
   from { opacity: 0; transform: translateY(-50%) translateX(-10px); }
   to   { opacity: 1; transform: translateY(-50%) translateX(0); }

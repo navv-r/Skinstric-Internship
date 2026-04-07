@@ -1,16 +1,44 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
 import "./HomePage.css";
 
 export default function HomePage() {
-  const navigate = useNavigate();
   const [hovered, setHovered] = useState(null);
   const [mounted, setMounted] = useState(false);
+  const [alignOffset, setAlignOffset] = useState(0);
+  const line1Ref = useRef(null);
+  const line2Ref = useRef(null);
 
   useEffect(() => {
     const t = setTimeout(() => setMounted(true), 50);
     return () => clearTimeout(t);
   }, []);
+
+  useEffect(() => {
+    function measure() {
+      if (line1Ref.current && line2Ref.current) {
+        const diff = line1Ref.current.offsetWidth - line2Ref.current.offsetWidth;
+        setAlignOffset(diff / 2);
+      }
+    }
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [mounted]);
+
+  // line2 ("skincare") translateX:
+  //   center  → alignOffset      (centered under line1)
+  //   left    → 0                (left-aligned)
+  //   right   → alignOffset * 2  (right-aligned)
+  const line2X =
+    hovered === "right" ? 0
+    : hovered === "left" ? alignOffset * 2
+    : alignOffset;
+
+  // line1 ("Sophisticated") always fills h1 width, but shift slightly for symmetry
+  const line1X =
+    hovered === "right" ? 0
+    : hovered === "left" ? 0
+    : 0;
 
   return (
     <div className={`home ${mounted ? "home--mounted" : ""}`}>
@@ -40,14 +68,19 @@ export default function HomePage() {
 
       {/* Hero */}
       <div className="home__hero">
-        <h1 className="home__title">
-          Sophisticated<br />skincare
+        <h1 className={`home__title${hovered === "left" ? " home__title--move-right" : hovered === "right" ? " home__title--move-left" : ""}`}>
+          <span ref={line1Ref} style={{ transform: `translateX(${line1X}px)` }}>
+            Sophisticated
+          </span>
+          <span ref={line2Ref} style={{ transform: `translateX(${line2X}px)` }}>
+            skincare
+          </span>
         </h1>
       </div>
 
       {/* Left panel */}
       <div
-        className={`home__side home__side--left ${hovered === "right" ? "home__side--faded" : ""}`}
+        className={`home__side home__side--left ${hovered === "right" ? "home__side--hidden" : ""}`}
         onMouseEnter={() => setHovered("left")}
         onMouseLeave={() => setHovered(null)}
       >
@@ -59,10 +92,9 @@ export default function HomePage() {
 
       {/* Right panel */}
       <div
-        className={`home__side home__side--right ${hovered === "left" ? "home__side--faded" : ""}`}
+        className={`home__side home__side--right ${hovered === "left" ? "home__side--hidden" : ""}`}
         onMouseEnter={() => setHovered("right")}
         onMouseLeave={() => setHovered(null)}
-        onClick={() => navigate("/testing")}
       >
         <span className="home__side-label">TAKE TEST</span>
         <div className="home__btn-diamond">
