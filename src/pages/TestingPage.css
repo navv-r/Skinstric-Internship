@@ -117,6 +117,21 @@
 }
 
 /* ── Input area ── */
+@keyframes inputEnterInitial {
+  from { opacity: 0; transform: translate(-50%, -40%); }
+  to   { opacity: 1; transform: translate(-50%, -44%); }
+}
+
+@keyframes inputExit {
+  from { opacity: 1; transform: translate(-50%, -44%); }
+  to   { opacity: 0; transform: translate(-50%, -50%); }
+}
+
+@keyframes inputEnter {
+  from { opacity: 0; transform: translate(-50%, -38%); }
+  to   { opacity: 1; transform: translate(-50%, -44%); }
+}
+
 .testing__input-wrap {
   position: absolute;
   top: 50%;
@@ -129,11 +144,18 @@
   gap: 10px;
   width: 480px;
   opacity: 0;
-  transition: opacity 0.6s ease 0.35s;
 }
 
 .testing--mounted .testing__input-wrap {
-  opacity: 1;
+  animation: inputEnterInitial 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.35s forwards;
+}
+
+.testing__input-wrap--exit {
+  animation: inputExit 0.35s cubic-bezier(0.4, 0, 1, 1) forwards !important;
+}
+
+.testing__input-wrap--enter {
+  animation: inputEnter 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards !important;
 }
 
 .testing__click-label {
