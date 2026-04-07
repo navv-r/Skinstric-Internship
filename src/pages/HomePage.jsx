@@ -5,6 +5,8 @@ export default function HomePage() {
   const [hovered, setHovered] = useState(null);
   const [mounted, setMounted] = useState(false);
   const [alignOffset, setAlignOffset] = useState(0);
+  const [leftSettled, setLeftSettled] = useState(false);
+  const [rightSettled, setRightSettled] = useState(false);
   const line1Ref = useRef(null);
   const line2Ref = useRef(null);
 
@@ -63,8 +65,16 @@ export default function HomePage() {
       </nav>
 
       {/* Large side diamonds (viewport edges) */}
-      <div className="home__side-diamond home__side-diamond--left" aria-hidden="true" />
-      <div className="home__side-diamond home__side-diamond--right" aria-hidden="true" />
+      <div
+        className="home__side-diamond home__side-diamond--left"
+        aria-hidden="true"
+        style={{ opacity: hovered === "right" ? 0 : 1, transition: "opacity 0.4s ease" }}
+      />
+      <div
+        className="home__side-diamond home__side-diamond--right"
+        aria-hidden="true"
+        style={{ opacity: hovered === "left" ? 0 : 1, transition: "opacity 0.4s ease" }}
+      />
 
       {/* Hero */}
       <div className="home__hero">
@@ -80,7 +90,14 @@ export default function HomePage() {
 
       {/* Left panel */}
       <div
-        className={`home__side home__side--left ${hovered === "right" ? "home__side--hidden" : ""}`}
+        className={`home__side home__side--left`}
+        style={leftSettled ? {
+          animation: "none",
+          opacity: hovered === "right" ? 0 : 1,
+          transition: "opacity 0.4s ease",
+          pointerEvents: hovered === "right" ? "none" : "auto",
+        } : {}}
+        onAnimationEnd={() => setLeftSettled(true)}
         onMouseEnter={() => setHovered("left")}
         onMouseLeave={() => setHovered(null)}
       >
@@ -92,7 +109,14 @@ export default function HomePage() {
 
       {/* Right panel */}
       <div
-        className={`home__side home__side--right ${hovered === "left" ? "home__side--hidden" : ""}`}
+        className={`home__side home__side--right`}
+        style={rightSettled ? {
+          animation: "none",
+          opacity: hovered === "left" ? 0 : 1,
+          transition: "opacity 0.4s ease",
+          pointerEvents: hovered === "left" ? "none" : "auto",
+        } : {}}
+        onAnimationEnd={() => setRightSettled(true)}
         onMouseEnter={() => setHovered("right")}
         onMouseLeave={() => setHovered(null)}
       >
