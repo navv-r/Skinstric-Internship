@@ -20,6 +20,7 @@ export default function TestingPage() {
   const [stepIndex, setStepIndex] = useState(0);
   const [values, setValues]       = useState({ name: "", city: "" });
   const [animState, setAnimState] = useState("idle"); // "idle" | "exit" | "enter"
+  const [phase, setPhase]         = useState("input"); // "input" | "loading" | "done"
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -40,7 +41,16 @@ export default function TestingPage() {
     if (!val) return;
 
     const nextIndex = stepIndex + 1;
-    if (nextIndex >= STEPS.length) return; // nothing more yet
+
+    if (nextIndex >= STEPS.length) {
+      // Last step — start loading phase
+      setAnimState("exit");
+      setTimeout(() => {
+        setPhase("loading");
+        setTimeout(() => setPhase("done"), 4000);
+      }, 350);
+      return;
+    }
 
     // Phase 1: exit animation
     setAnimState("exit");
@@ -96,21 +106,43 @@ export default function TestingPage() {
         ))}
       </div>
 
-      {/* Input */}
-      <div className={`testing__input-wrap ${animState === "exit" ? "testing__input-wrap--exit" : animState === "enter" ? "testing__input-wrap--enter" : ""}`}>
-        <span className="testing__click-label">{step.label}</span>
-        <input
-          ref={inputRef}
-          key={step.key}
-          className="testing__input"
-          type="text"
-          placeholder={step.placeholder}
-          autoComplete="off"
-          value={values[step.key]}
-          onChange={e => setValues(v => ({ ...v, [step.key]: e.target.value }))}
-          onKeyDown={handleKeyDown}
-        />
-      </div>
+      {/* Input — hidden during loading/done */}
+      {phase === "input" && (
+        <div className={`testing__input-wrap ${animState === "exit" ? "testing__input-wrap--exit" : animState === "enter" ? "testing__input-wrap--enter" : ""}`}>
+          <span className="testing__click-label">{step.label}</span>
+          <input
+            ref={inputRef}
+            key={step.key}
+            className="testing__input"
+            type="text"
+            placeholder={step.placeholder}
+            autoComplete="off"
+            value={values[step.key]}
+            onChange={e => setValues(v => ({ ...v, [step.key]: e.target.value }))}
+            onKeyDown={handleKeyDown}
+          />
+        </div>
+      )}
+
+      {/* Loading phase */}
+      {phase === "loading" && (
+        <div className="testing__loading">
+          <span className="testing__loading-text">processing submission</span>
+          <div className="testing__dots">
+            <span className="testing__dot" style={{ animationDelay: "0s" }} />
+            <span className="testing__dot" style={{ animationDelay: "0.2s" }} />
+            <span className="testing__dot" style={{ animationDelay: "0.4s" }} />
+          </div>
+        </div>
+      )}
+
+      {/* Done phase */}
+      {phase === "done" && (
+        <div className="testing__done">
+          <p className="testing__thankyou">Thank You!</p>
+          <p className="testing__proceed-hint">Proceed for the next step</p>
+        </div>
+      )}
 
       {/* Back */}
       <button className="testing__back" onClick={() => navigate("/")}>
@@ -119,6 +151,16 @@ export default function TestingPage() {
         </div>
         <span className="testing__back-label">BACK</span>
       </button>
+
+      {/* Proceed button — only on done phase */}
+      {phase === "done" && (
+        <button className="testing__proceed" onClick={() => navigate("/analysis")}>
+          <span className="testing__proceed-label">PROCEED</span>
+          <div className="testing__proceed-diamond">
+            <span className="testing__proceed-arrow">&#9654;</span>
+          </div>
+        </button>
+      )}
 
     </div>
   );
