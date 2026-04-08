@@ -43,11 +43,20 @@ export default function TestingPage() {
     const nextIndex = stepIndex + 1;
 
     if (nextIndex >= STEPS.length) {
-      // Last step — start loading phase
+      // Last step — start loading phase then call API
       setAnimState("exit");
-      setTimeout(() => {
+      setTimeout(async () => {
         setPhase("loading");
-        setTimeout(() => setPhase("done"), 4000);
+        try {
+          await fetch("https://us-central1-frontend-simplified.cloudfunctions.net/skinstricPhaseOne", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name: values.name.trim(), city: val }),
+          });
+        } catch (err) {
+          console.error("skinstricPhaseOne error:", err);
+        }
+        setPhase("done");
       }, 350);
       return;
     }
@@ -154,7 +163,7 @@ export default function TestingPage() {
 
       {/* Proceed button — only on done phase */}
       {phase === "done" && (
-        <button className="testing__proceed" onClick={() => navigate("/analysis")}>
+        <button className="testing__proceed" onClick={() => navigate("/result")}>
           <span className="testing__proceed-label">PROCEED</span>
           <div className="testing__proceed-diamond">
             <span className="testing__proceed-arrow">&#9654;</span>
