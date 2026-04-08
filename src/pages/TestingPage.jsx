@@ -154,7 +154,7 @@ export default function TestingPage() {
 
       {/* Proceed button — only on done phase */}
       {phase === "done" && (
-        <button className="testing__proceed" onClick={() => navigate("/analysis")}>
+        <button className="testing__proceed" onClick={() => navigate("/result")}>
           <span className="testing__proceed-label">PROCEED</span>
           <div className="testing__proceed-diamond">
             <span className="testing__proceed-arrow">&#9654;</span>

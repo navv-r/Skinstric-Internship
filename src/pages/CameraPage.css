@@ -1,0 +1,194 @@
+/* ── Base ── */
+.camera {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: #ffffff;
+  overflow: hidden;
+  font-family: 'Inter', 'Raleway', sans-serif;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.camera--mounted {
+  opacity: 1;
+}
+
+/* ── Nav ── */
+.camera__nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 22px;
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 0.5s ease 0.1s, transform 0.5s ease 0.1s;
+}
+
+.camera--mounted .camera__nav {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.camera__nav-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.camera__logo {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: #1a1b1c;
+}
+
+.camera__nav-label {
+  font-size: 11px;
+  font-weight: 400;
+  color: rgba(26, 27, 28, 0.51);
+  letter-spacing: 0.06em;
+}
+
+.camera__enter-code {
+  background: #1a1b1c;
+  color: #fcfcfc;
+  border: none;
+  border-radius: 0;
+  padding: 10px 20px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  font-family: 'Inter', 'Raleway', sans-serif;
+  transition: opacity 0.2s ease;
+}
+
+.camera__enter-code:hover {
+  opacity: 0.85;
+}
+
+/* ── Center ── */
+.camera__center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  opacity: 0;
+  transition: opacity 0.6s ease 0.3s;
+}
+
+.camera--mounted .camera__center {
+  opacity: 1;
+}
+
+/* ── Icon wrap (anchor for diamonds) ── */
+.camera__icon-wrap {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Diamonds ── */
+.camera__diamonds {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.camera__diamond {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 2px dotted rgba(26, 27, 28, 0.4);
+}
+
+@keyframes cameraRotateCW {
+  from { transform: rotate(45deg); }
+  to   { transform: rotate(405deg); }
+}
+
+/* ── Icon ── */
+.camera__icon {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Status text ── */
+.camera__status {
+  position: relative;
+  z-index: 2;
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #1a1b1c;
+}
+
+/* ── Tips ── */
+.camera__tips {
+  position: absolute;
+  bottom: 60px;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.6s ease 0.5s, transform 0.6s ease 0.5s;
+}
+
+.camera--mounted .camera__tips {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.camera__tips-title {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: #1a1b1c;
+}
+
+.camera__tips-list {
+  display: flex;
+  gap: 36px;
+  align-items: center;
+}
+
+.camera__tip {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: #1a1b1c;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.camera__tip-diamond {
+  font-size: 9px;
+  color: #1a1b1c;
+}
