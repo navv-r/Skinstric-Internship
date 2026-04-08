@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./ResultPage.css";
 
 const DIAMONDS = [
@@ -36,9 +36,29 @@ function GalleryIcon() {
 
 export default function ResultPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [mounted, setMounted] = useState(false);
   const [cameraModal, setCameraModal] = useState(false);
   const [cameraModalExiting, setCameraModalExiting] = useState(false);
+  const [previewImage, setPreviewImage] = useState(location.state?.capturedImage ?? null);
+  const [previewMirrored, setPreviewMirrored] = useState(!!location.state?.capturedImage);
+  const fileInputRef = useRef(null);
+
+  function handleGalleryClick() {
+    fileInputRef.current?.click();
+  }
+
+  function handleFileChange(e) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      setPreviewImage(ev.target.result);
+      setPreviewMirrored(false);
+    };
+    reader.readAsDataURL(file);
+    e.target.value = "";
+  }
 
   function closeModal() {
     setCameraModalExiting(true);
@@ -78,7 +98,16 @@ export default function ResultPage() {
       {/* Preview box */}
       <div className="result__preview">
         <span className="result__preview-label">Preview</span>
-        <div className="result__preview-box" />
+        <div className="result__preview-box">
+          {previewImage && (
+            <img
+              src={previewImage}
+              alt="Face preview"
+              className="result__preview-img"
+              style={previewMirrored ? { transform: "scaleX(-1)" } : undefined}
+            />
+          )}
+        </div>
       </div>
 
       {/* Subtitle */}
@@ -132,7 +161,7 @@ export default function ResultPage() {
             />
           ))}
         </div>
-        <button className="result__icon-btn" onClick={() => {}}>
+        <button className="result__icon-btn" onClick={handleGalleryClick}>
           <GalleryIcon />
         </button>
         {/* Label with line */}
@@ -154,6 +183,15 @@ export default function ResultPage() {
           </div>
         </div>
       )}
+
+      {/* Hidden file input for gallery */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        style={{ display: "none" }}
+        onChange={handleFileChange}
+      />
 
       {/* Back */}
       <button className="result__back" onClick={() => navigate("/testing")}>

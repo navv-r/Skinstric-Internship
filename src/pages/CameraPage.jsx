@@ -32,6 +32,11 @@ export default function CameraPage() {
     return () => clearTimeout(t);
   }, []);
 
+  useEffect(() => {
+    const t = setTimeout(() => navigate("/camera/capture"), 5000);
+    return () => clearTimeout(t);
+  }, [navigate]);
+
   return (
     <div className={`camera ${mounted ? "camera--mounted" : ""}`}>
 
