@@ -102,6 +102,7 @@ export default function ResultPage() {
       }
       await new Promise(r => setTimeout(r, 3000));
       alert("Your image has been successfully analyzed.");
+      navigate("/select", { state: { demographics } });
     }
     analyze();
   }, [isLoading, previewImage]);
