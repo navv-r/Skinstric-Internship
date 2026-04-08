@@ -49,6 +49,7 @@ export default function ResultPage() {
   const [previewImage, setPreviewImage] = useState(location.state?.capturedImage ?? null);
   const [previewMirrored, setPreviewMirrored] = useState(!!location.state?.capturedImage);
   const [isLoading, setIsLoading] = useState(!!location.state?.capturedImage);
+  const [demographics, setDemographics] = useState(null);
   const fileInputRef = useRef(null);
 
   function handleGalleryClick() {
@@ -82,10 +83,28 @@ export default function ResultPage() {
   }, []);
 
   useEffect(() => {
-    if (!isLoading) return;
-    const t = setTimeout(() => alert("image analyzed successfully"), 3000);
-    return () => clearTimeout(t);
-  }, [isLoading]);
+    if (!isLoading || !previewImage) return;
+    async function analyze() {
+      try {
+        const base64 = previewImage.split(",")[1];
+        const res = await fetch(
+          "https://us-central1-frontend-simplified.cloudfunctions.net/skinstricPhaseTwo",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ image: base64 }),
+          }
+        );
+        const data = await res.json();
+        setDemographics(data);
+      } catch (err) {
+        console.error("skinstricPhaseTwo error:", err);
+      }
+      await new Promise(r => setTimeout(r, 3000));
+      alert("Your image has been successfully analyzed.");
+    }
+    analyze();
+  }, [isLoading, previewImage]);
 
   if (isLoading) {
     return (
