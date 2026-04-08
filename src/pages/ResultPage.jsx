@@ -34,6 +34,12 @@ function GalleryIcon() {
   );
 }
 
+const LOADING_DIAMONDS = [
+  { size: 220, duration: 18, delay:    0, opacity: 0.55 },
+  { size: 260, duration: 25, delay: -7.8, opacity: 0.28 },
+  { size: 300, duration: 35, delay:  -20, opacity: 0.18 },
+];
+
 export default function ResultPage() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -42,6 +48,7 @@ export default function ResultPage() {
   const [cameraModalExiting, setCameraModalExiting] = useState(false);
   const [previewImage, setPreviewImage] = useState(location.state?.capturedImage ?? null);
   const [previewMirrored, setPreviewMirrored] = useState(!!location.state?.capturedImage);
+  const [isLoading, setIsLoading] = useState(!!location.state?.capturedImage);
   const fileInputRef = useRef(null);
 
   function handleGalleryClick() {
@@ -55,6 +62,7 @@ export default function ResultPage() {
     reader.onload = (ev) => {
       setPreviewImage(ev.target.result);
       setPreviewMirrored(false);
+      setIsLoading(true);
     };
     reader.readAsDataURL(file);
     e.target.value = "";
@@ -72,6 +80,63 @@ export default function ResultPage() {
     const t = setTimeout(() => setMounted(true), 50);
     return () => clearTimeout(t);
   }, []);
+
+  useEffect(() => {
+    if (!isLoading) return;
+    const t = setTimeout(() => alert("image analyzed successfully"), 3000);
+    return () => clearTimeout(t);
+  }, [isLoading]);
+
+  if (isLoading) {
+    return (
+      <div className={`result ${mounted ? "result--mounted" : ""}`}>
+        <nav className="result__nav">
+          <div className="result__nav-left">
+            <span className="result__logo">SKINSTRIC</span>
+            <svg width="4" height="17" viewBox="0 0 4 17" fill="none" aria-hidden="true">
+              <line x1="1" y1="0" x2="1" y2="17" stroke="#1a1b1c" strokeWidth="1"/>
+              <line x1="1" y1="0" x2="4" y2="0" stroke="#1a1b1c" strokeWidth="1"/>
+              <line x1="1" y1="17" x2="4" y2="17" stroke="#1a1b1c" strokeWidth="1"/>
+            </svg>
+            <span className="result__nav-label">INTRO</span>
+            <svg width="4" height="17" viewBox="0 0 4 17" fill="none" aria-hidden="true">
+              <line x1="3" y1="0" x2="3" y2="17" stroke="#1a1b1c" strokeWidth="1"/>
+              <line x1="3" y1="0" x2="0" y2="0" stroke="#1a1b1c" strokeWidth="1"/>
+              <line x1="3" y1="17" x2="0" y2="17" stroke="#1a1b1c" strokeWidth="1"/>
+            </svg>
+          </div>
+          <button className="result__enter-code">ENTER CODE</button>
+        </nav>
+
+        <div className="result__loading-diamonds" aria-hidden="true">
+          {LOADING_DIAMONDS.map((d, i) => (
+            <div
+              key={i}
+              className="result__loading-diamond"
+              style={{
+                width:      d.size,
+                height:     d.size,
+                marginTop:  -(d.size / 2),
+                marginLeft: -(d.size / 2),
+                opacity:    d.opacity,
+                animation:  `resultRotateCW ${d.duration}s linear ${d.delay}s infinite`,
+              }}
+            />
+          ))}
+        </div>
+        <div className="result__loading-center">
+          <p className="result__loading-text">
+            Preparing your Analysis
+            <span className="result__loading-dots">
+              <span className="result__loading-dot" style={{ animationDelay: "0s" }}>.</span>
+              <span className="result__loading-dot" style={{ animationDelay: "0.2s" }}>.</span>
+              <span className="result__loading-dot" style={{ animationDelay: "0.4s" }}>.</span>
+            </span>
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={`result ${mounted ? "result--mounted" : ""}`}>
