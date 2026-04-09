@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import "./TestingPage.css";
+import "./pages.css";
 
 // d1 starts at 45°, d2 at ~85° (-7.8s into 70s cycle), d3 at ~125° (-20s into 90s cycle)
 const DIAMONDS = [

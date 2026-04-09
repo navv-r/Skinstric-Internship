@@ -4,6 +4,8 @@ import TestingPage from "./pages/TestingPage";
 import ResultPage from "./pages/ResultPage";
 import CameraPage from "./pages/CameraPage";
 import CameraCapturePage from "./pages/CameraCapturePage";
+import SelectPage from "./pages/SelectPage";
+import SummaryPage from "./pages/SummaryPage";
 import "./App.css";
 
 function App() {
@@ -15,6 +17,8 @@ function App() {
         <Route path="/result" element={<ResultPage />} />
         <Route path="/camera" element={<CameraPage />} />
         <Route path="/camera/capture" element={<CameraCapturePage />} />
+        <Route path="/select" element={<SelectPage />} />
+        <Route path="/summary" element={<SummaryPage />} />
       </Routes>
     </BrowserRouter>
   );
