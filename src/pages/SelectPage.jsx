@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import "./SelectPage.css";
+import "./pages.css";
 
 export default function SelectPage() {
   const navigate = useNavigate();
   const location = useLocation();
+  const demographics = location.state?.demographics ?? null;
   const [mounted, setMounted] = useState(false);
   const [cellHovered, setCellHovered] = useState(false);
   const activeCell = useRef(null);
@@ -74,6 +75,7 @@ export default function SelectPage() {
             className="select__cell"
             onMouseEnter={() => handleCellEnter(0)}
             onMouseLeave={handleCellLeave}
+            onClick={() => navigate("/summary", { state: { demographics } })}
           >
             <span>DEMOGRAPHICS</span>
           </button>
@@ -109,7 +111,7 @@ export default function SelectPage() {
         <span>BACK</span>
       </button>
 
-      <button className="select__summary" onClick={() => navigate("/summary")}>
+      <button className="select__summary" onClick={() => navigate("/summary", { state: { demographics } })}>
         <span>GET SUMMARY</span>
         <div className="select__nav-diamond">
           <span className="select__nav-arrow">&#9654;</span>

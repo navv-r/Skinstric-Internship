@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import "./ResultPage.css";
+import "./pages.css";
 
 const DIAMONDS = [
   { size: 300, duration: 50, delay:    0, opacity: 0.55 },
@@ -49,7 +49,7 @@ export default function ResultPage() {
   const [previewImage, setPreviewImage] = useState(location.state?.capturedImage ?? null);
   const [previewMirrored, setPreviewMirrored] = useState(!!location.state?.capturedImage);
   const [isLoading, setIsLoading] = useState(!!location.state?.capturedImage);
-  const [demographics, setDemographics] = useState(null);
+  const [, setDemographics] = useState(null);
   const fileInputRef = useRef(null);
 
   function handleGalleryClick() {
@@ -85,6 +85,7 @@ export default function ResultPage() {
   useEffect(() => {
     if (!isLoading || !previewImage) return;
     async function analyze() {
+      let data = null;
       try {
         const base64 = previewImage.split(",")[1];
         const res = await fetch(
@@ -95,14 +96,12 @@ export default function ResultPage() {
             body: JSON.stringify({ image: base64 }),
           }
         );
-        const data = await res.json();
+        data = await res.json();
         setDemographics(data);
       } catch (err) {
         console.error("skinstricPhaseTwo error:", err);
       }
-      await new Promise(r => setTimeout(r, 3000));
-      alert("Your image has been successfully analyzed.");
-      navigate("/select", { state: { demographics } });
+      navigate("/select", { state: { demographics: data }, replace: true });
     }
     analyze();
   }, [isLoading, previewImage]);

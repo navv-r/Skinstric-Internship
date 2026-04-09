@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "./CameraPage.css";
+import "./pages.css";
 
 const DIAMONDS = [
   { size: 320, duration: 50, delay:    0, opacity: 0.55 },

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import "./CameraCapturePage.css";
+import "./pages.css";
 
 export default function CameraCapturePage() {
   const navigate = useNavigate();
@@ -72,7 +72,7 @@ export default function CameraCapturePage() {
     restart();
   }
 
-  function handleProceed() {
+  function handleUsePhoto() {
     navigate("/result", { state: { capturedImage: captured } });
   }
 
@@ -115,55 +115,59 @@ export default function CameraCapturePage() {
         <button className="capture__enter-code">ENTER CODE</button>
       </nav>
 
-      {/* Right-side shutter OR proceed */}
-      {!cameraError && (
+      {/* "great shot!" label — only when captured */}
+      {captured && (
+        <p className="capture__great-shot">great shot!</p>
+      )}
+
+      {/* Right-side shutter — only when not captured */}
+      {!cameraError && !captured && (
         <div className="capture__right-action">
-          {captured ? (
-            <>
-              <span className="capture__action-label">PROCEED</span>
-              <button className="capture__shutter" onClick={handleProceed} aria-label="Proceed">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1a1b1c" strokeWidth="2">
-                  <polyline points="9 18 15 12 9 6" />
-                </svg>
-              </button>
-            </>
-          ) : (
-            <>
-              <span className="capture__action-label">TAKE PICTURE</span>
-              <button className="capture__shutter" onClick={handleCapture} aria-label="Take photo">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1a1b1c" strokeWidth="1.5">
-                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-                  <circle cx="12" cy="13" r="4"/>
-                </svg>
-              </button>
-            </>
-          )}
+          <span className="capture__action-label">TAKE PICTURE</span>
+          <button className="capture__shutter" onClick={handleCapture} aria-label="Take photo">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1a1b1c" strokeWidth="1.5">
+              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+              <circle cx="12" cy="13" r="4"/>
+            </svg>
+          </button>
         </div>
       )}
 
-      {/* Bottom tips overlay */}
-      <div className="capture__bottom">
-        <p className="capture__tips-title">TO GET BETTER RESULTS MAKE SURE TO HAVE</p>
-        <div className="capture__tips-list">
-          <span className="capture__tip"><span className="capture__tip-diamond">&#9671;</span> NEUTRAL EXPRESSION</span>
-          <span className="capture__tip"><span className="capture__tip-diamond">&#9671;</span> FRONTAL POSE</span>
-          <span className="capture__tip"><span className="capture__tip-diamond">&#9671;</span> ADEQUATE LIGHTING</span>
+      {/* Bottom tips — only when not captured */}
+      {!captured && (
+        <div className="capture__bottom">
+          <p className="capture__tips-title">TO GET BETTER RESULTS MAKE SURE TO HAVE</p>
+          <div className="capture__tips-list">
+            <span className="capture__tip"><span className="capture__tip-diamond">&#9671;</span> NEUTRAL EXPRESSION</span>
+            <span className="capture__tip"><span className="capture__tip-diamond">&#9671;</span> FRONTAL POSE</span>
+            <span className="capture__tip"><span className="capture__tip-diamond">&#9671;</span> ADEQUATE LIGHTING</span>
+          </div>
         </div>
-      </div>
+      )}
 
-      {/* Bottom-left back / retake */}
-      <button
-        className="capture__back-btn"
-        onClick={captured ? handleRetake : () => navigate("/camera")}
-        aria-label={captured ? "Retake" : "Back"}
-      >
-        <div className="capture__back-diamond">
-          <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-            <polygon points="5,0 10,5 5,10 0,5" fill="#1a1b1c"/>
-          </svg>
+      {/* Bottom-left back — only when not captured */}
+      {!captured && (
+        <button
+          className="capture__back-btn"
+          onClick={() => navigate("/camera")}
+          aria-label="Back"
+        >
+          <div className="capture__back-diamond">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+              <polygon points="5,0 10,5 5,10 0,5" fill="#1a1b1c"/>
+            </svg>
+          </div>
+          <span className="capture__back-label">BACK</span>
+        </button>
+      )}
+
+      {/* Retake / Use this photo — only when captured */}
+      {captured && (
+        <div className="capture__post-actions">
+          <button className="capture__post-btn" onClick={handleRetake}>Retake</button>
+          <button className="capture__post-btn capture__post-btn--primary" onClick={handleUsePhoto}>Use this photo</button>
         </div>
-        <span className="capture__back-label">{captured ? "RETAKE" : "BACK"}</span>
-      </button>
+      )}
 
       <canvas ref={canvasRef} style={{ display: "none" }} />
     </div>

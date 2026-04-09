@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import "./HomePage.css";
+import "./pages.css";
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -135,6 +135,25 @@ export default function HomePage() {
         HIGHLY-PERSONALIZED ROUTINE TAILORED TO<br />
         WHAT YOUR SKIN NEEDS.
       </p>
+
+      {/* Tablet / phone layout */}
+      <div className="home__mobile-layout">
+        <div className="home__mobile-diamond" aria-hidden="true" />
+        <h1 className="home__mobile-title">
+          Sophisticated<br />skincare
+        </h1>
+        <p className="home__mobile-desc">
+          Skinstric developed an A.I. that creates a<br />
+          highly-personalized routine tailored to<br />
+          what your skin needs.
+        </p>
+        <button className="home__mobile-cta" onClick={() => navigate("/testing")}>
+          <span>ENTER EXPERIENCE</span>
+          <div className="home__mobile-cta-diamond">
+            <span className="home__mobile-cta-arrow">&#9654;</span>
+          </div>
+        </button>
+      </div>
 
     </div>
   );
