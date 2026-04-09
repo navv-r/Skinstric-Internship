@@ -104,7 +104,7 @@ export default function ResultPage() {
       navigate("/select", { state: { demographics: data }, replace: true });
     }
     analyze();
-  }, [isLoading, previewImage]);
+  }, [isLoading, previewImage, navigate]);
 
   if (isLoading) {
     return (
