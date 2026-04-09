@@ -80,7 +80,7 @@ export default function ResultPage() {
   useEffect(() => {
     const t = setTimeout(() => setMounted(true), 50);
     return () => clearTimeout(t);
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
     if (!isLoading || !previewImage) return;
